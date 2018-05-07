@@ -58,9 +58,11 @@ class ViewController: UIViewController {
     
     // 画像をタップした際のイベントハンドラ
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
-        // スライドショーを停止する
-        stopSlideShow()
-        
+        // スライドショーが再生中の場合は停止する
+        if (self.timer != nil) {
+            stopSlideShow()
+        }
+
         // ズームページに移動
         self.performSegue(withIdentifier: "toZoom", sender: nil)
     }
