@@ -58,6 +58,9 @@ class ViewController: UIViewController {
     
     // 画像をタップした際のイベントハンドラ
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        // スライドショーを停止する
+        stopSlideShow()
+        
         // ズームページに移動
         self.performSegue(withIdentifier: "toZoom", sender: nil)
     }
@@ -88,18 +91,28 @@ class ViewController: UIViewController {
     @IBAction func playButtonTapped(_ sender: Any) {
         // 停止中の場合は自動再生をスタートさせる
         if self.timer == nil {
-            playButton.setTitle("停止", for: .normal)
-            self.timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(nextButtonTapped), userInfo: nil, repeats: true)
-            nextButton.isEnabled = false
-            prevButton.isEnabled = false
+            startSlideShow()
         // 再生中の場合は自動再生を停止する
         } else {
-            self.timer.invalidate()
-            self.timer = nil
-            playButton.setTitle("再生", for: .normal)
-            nextButton.isEnabled = true
-            prevButton.isEnabled = true
+            stopSlideShow()
         }
+    }
+    
+    // スライドショーを開始する
+    private func startSlideShow() {
+        playButton.setTitle("停止", for: .normal)
+        self.timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(nextButtonTapped), userInfo: nil, repeats: true)
+        nextButton.isEnabled = false
+        prevButton.isEnabled = false
+    }
+    
+    // スライドショーを停止する
+    private func stopSlideShow() {
+        self.timer.invalidate()
+        self.timer = nil
+        playButton.setTitle("再生", for: .normal)
+        nextButton.isEnabled = true
+        prevButton.isEnabled = true
     }
 }
 
